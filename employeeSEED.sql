@@ -72,7 +72,7 @@ VALUES ("Senior Developer", 140000, 3);
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Human Resource Manager", 90000, 4);
 INSERT INTO roles (title, salary, department_id)
-VALUES ("Recuitor", 60000, 4);
+VALUES ("Recruiter", 60000, 4);
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Relations Specialist", 45000, 4);
 
@@ -128,3 +128,14 @@ VALUES ("Maxie", "Gus", 14, null);
 SELECT * FROM department;
 SELECT * FROM roles;
 SELECT * FROM employee;
+
+
+SELECT department.name AS department, employee.first_name, employee.last_name, employee.id
+FROM employee
+LEFT JOIN roles ON (roles.id = employee.role_id)
+LEFT JOIN department ON (department.id = roles.department_id)
+ORDER BY department.name;
+
+SELECT employee.first_name, employee.last_name, roles.title
+AS title FROM employee 
+JOIN roles ON employee.role_id = roles.id;
