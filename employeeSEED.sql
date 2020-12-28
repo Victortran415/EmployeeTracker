@@ -84,46 +84,46 @@ VALUES ("Accountant", 78000, 5);
 -- EMPLOYEES --
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Rabia", "Buckley", 2, null);
+VALUES ("Rabia", "Buckley", 1, null);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Paulina", "Stafford", 1, 1);
+VALUES ("Paulina", "Stafford", 2, 1);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Christine", "Thorne", 3, null);
+VALUES ("Christine", "Thorne", 3, 1);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Leonardo", "Darby", 4, 2);
+VALUES ("Leonardo", "Darby", 4, null);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Will", "Ball", 5, null);
+VALUES ("Will", "Ball", 5, 2);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Andreea", "Schwartz", 6, null);
+VALUES ("Andreea", "Schwartz", 6, 2);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Vince", "Bradford", 7, 3);
+VALUES ("Vince", "Bradford", 7, null);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Gerorgina", "Burks", 8, null);
+VALUES ("Gerorgina", "Burks", 8, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Conner", "Shaw", 9, null);
+VALUES ("Conner", "Shaw", 9, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Kay", "McBride", 10, 4);
+VALUES ("Kay", "McBride", 10, null);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Tyrese", "Archer", 11, null);
+VALUES ("Tyrese", "Archer", 11, 4);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Angie", "Lopez", 12, null);
+VALUES ("Angie", "Lopez", 12, 4);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Clyde", "Jarvis", 13, 5);
+VALUES ("Clyde", "Jarvis", 13, null);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Maxie", "Gus", 14, null);
+VALUES ("Maxie", "Gus", 14, 5);
 
 SELECT * FROM department;
 SELECT * FROM roles;

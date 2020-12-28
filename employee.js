@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if (err) throw err;
     mainMenu()
-    //TODO: create inquirer prompt function below then add here
+
 })
 
 const mainMenu = () => {
@@ -24,6 +24,9 @@ const mainMenu = () => {
             "View Employees by Departments",
             "View Employees by Roles",
             "View All Employees",
+            "Add Department",
+            "Add Employee",
+            "Add Roles",
             "Exit"
         ]
     }).then((response) => {
@@ -38,6 +41,15 @@ const mainMenu = () => {
                 break;
             case "View All Employees":
                 searchAllEmployees()
+                break;
+            case "Add Department":
+                addingDepartment()
+                break;
+            case "Add Role":
+
+                break;
+            case "Add Employee":
+                addingEmployee()
                 break;
             default:
                 connection.end();
@@ -149,4 +161,38 @@ const searchAllEmployees = () => {
         console.table(data);
         mainMenu()
     })
+}
+
+const addingDepartment = () => {
+    inquirer.prompt([
+        {
+        type: "input",
+        name: "addDepartment",
+        message: "What is the name of the Department you'll wish to add?"
+        }
+    ]).then((res) => {
+        console.log(res)
+        connection.query(`INSERT INTO department (name) VALUES ('${res.appDepartment}')`, (err, data) => {
+            if (err) throw err;
+            console.log("Successfully added Department")
+            mainMenu()
+        })
+    })
+}
+
+
+//NOTE: Need to complete this 
+const addingEmployee = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "firstName",
+            message: "Enter Employee first name"
+        },
+        {
+            type: "input",
+            name: "lastName",
+            message: "Enter Employee last name"
+        }
+    ])
 }
