@@ -37,7 +37,7 @@ const mainMenu = () => {
                 searchByRoles()
                 break;
             case "View All Employees":
-                
+                searchAllEmployees()
                 break;
             default:
                 connection.end();
@@ -135,6 +135,15 @@ const searchByRoles = () => {
     query += "AS title FROM employee " 
     query += "JOIN roles ON employee.role_id = roles.id"
 
+    connection.query(query, (err, data) => {
+        if (err) throw err;
+        console.table(data);
+        mainMenu()
+    })
+}
+
+const searchAllEmployees = () => {
+    let query = "SELECT first_name, last_name, title, salary FROM employee LEFT JOIN roles ON employee.role_id = roles.id"
     connection.query(query, (err, data) => {
         if (err) throw err;
         console.table(data);

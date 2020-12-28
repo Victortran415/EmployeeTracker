@@ -129,13 +129,18 @@ SELECT * FROM department;
 SELECT * FROM roles;
 SELECT * FROM employee;
 
+-- search by department --
+SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name 
+from department 
+LEFT JOIN roles ON roles.department_id = department.id 
+LEFT JOIN employee ON employee.role_id = roles.id 
+WHERE department.name = 'Sales';
 
-SELECT department.name AS department, employee.first_name, employee.last_name, employee.id
-FROM employee
-LEFT JOIN roles ON (roles.id = employee.role_id)
-LEFT JOIN department ON (department.id = roles.department_id)
-ORDER BY department.name;
-
+-- search by roles --
 SELECT employee.first_name, employee.last_name, roles.title
 AS title FROM employee 
 JOIN roles ON employee.role_id = roles.id;
+
+--search all employees --
+SELECT first_name, last_name, title, CONCAT('$', salary) FROM employee
+LEFT JOIN roles ON employee.role_id = roles.id;
