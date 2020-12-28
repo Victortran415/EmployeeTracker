@@ -1,6 +1,5 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const consoleTable = require("console.table");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -72,7 +71,7 @@ const searchByDepartments = () => {
             
             employeeDep = connection.query(query, (err, data) => {
                 if (err) throw err;
-                console.log(data);
+                console.table(data);
                 mainMenu()
             })
         }
@@ -85,7 +84,7 @@ const searchByDepartments = () => {
             
             employeeDep = connection.query(query, (err, data) => {
                 if (err) throw err;
-                console.log(data);
+                console.table(data);
                 mainMenu()
             })
         }
@@ -98,7 +97,7 @@ const searchByDepartments = () => {
             
             employeeDep = connection.query(query, (err, data) => {
                 if (err) throw err;
-                console.log(data);
+                console.table(data);
                 mainMenu()
             })
         }
@@ -111,7 +110,7 @@ const searchByDepartments = () => {
             
             employeeDep = connection.query(query, (err, data) => {
                 if (err) throw err;
-                console.log(data);
+                console.table(data);
                 mainMenu()
             })
         }
@@ -124,7 +123,7 @@ const searchByDepartments = () => {
             
             employeeDep = connection.query(query, (err, data) => {
                 if (err) throw err;
-                console.log(data);
+                console.table(data);
                 mainMenu()
             })
         }
@@ -138,7 +137,7 @@ const searchByRoles = () => {
 
     connection.query(query, (err, data) => {
         if (err) throw err;
-        console.log(data);
+        console.table(data);
         mainMenu()
     })
 }
