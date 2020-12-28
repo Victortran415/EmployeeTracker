@@ -49,20 +49,87 @@ const mainMenu = () => {
 }
 
 const searchByDepartments = () => {
-    
-    let query = "SELECT department.name AS department, employee.first_name, employee.last_name, employee.id FROM employee "
-    query += "LEFT JOIN roles ON (roles.id = employee.role_id) "
-    query += "LEFT JOIN department ON (department.id = roles.department_id) ORDER BY department.name"
-    
-    connection.query(query, (err, data) => {
-        if (err) throw err;
-        console.log(data);
-        mainMenu()
+    inquirer.prompt({
+        type: "list",
+        name: "DepartmentName",
+        message: "What department do you want to view?",
+        choices: [
+            "Sales",
+            "Marketing",
+            "Engineer",
+            "Human Resource",
+            "Finance"
+        ]
+    }).then((res) => {
+        console.log(res)
+        const department = res.DepartmentName
+        if (department === "Sales") {
+            
+            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            query += "LEFT JOIN roles ON roles.department_id = department.id "
+            query += "LEFT JOIN employee ON employee.role_id = roles.id "
+            query += "WHERE department.name = 'Sales' "
+            
+            employeeDep = connection.query(query, (err, data) => {
+                if (err) throw err;
+                console.log(data);
+                mainMenu()
+            })
+        }
+        if (department === "Marketing") {
+            
+            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            query += "LEFT JOIN roles ON roles.department_id = department.id "
+            query += "LEFT JOIN employee ON employee.role_id = roles.id "
+            query += "WHERE department.name = 'Marketing' "
+            
+            employeeDep = connection.query(query, (err, data) => {
+                if (err) throw err;
+                console.log(data);
+                mainMenu()
+            })
+        }
+        if (department === "Engineer") {
+            
+            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            query += "LEFT JOIN roles ON roles.department_id = department.id "
+            query += "LEFT JOIN employee ON employee.role_id = roles.id "
+            query += "WHERE department.name = 'Engineer' "
+            
+            employeeDep = connection.query(query, (err, data) => {
+                if (err) throw err;
+                console.log(data);
+                mainMenu()
+            })
+        }
+        if (department === "Human Resource") {
+            
+            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            query += "LEFT JOIN roles ON roles.department_id = department.id "
+            query += "LEFT JOIN employee ON employee.role_id = roles.id "
+            query += "WHERE department.name = 'Human Resource' "
+            
+            employeeDep = connection.query(query, (err, data) => {
+                if (err) throw err;
+                console.log(data);
+                mainMenu()
+            })
+        }
+        if (department === "Finance") {
+            
+            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            query += "LEFT JOIN roles ON roles.department_id = department.id "
+            query += "LEFT JOIN employee ON employee.role_id = roles.id "
+            query += "WHERE department.name = 'Finance' "
+            
+            employeeDep = connection.query(query, (err, data) => {
+                if (err) throw err;
+                console.log(data);
+                mainMenu()
+            })
+        }
     })
-
-    
 }
-
 
 const searchByRoles = () => {
     let query = "SELECT employee.first_name, employee.last_name, roles.title "
