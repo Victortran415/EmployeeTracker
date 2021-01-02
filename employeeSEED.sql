@@ -58,7 +58,7 @@ VALUES ("Salesperson", 40000, 1);
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Marketing Manager", 100000, 2);
 INSERT INTO roles (title, salary, department_id)
-VALUES ("Marketing Specialit", 80000, 2);
+VALUES ("Marketing Specialist", 80000, 2);
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Brand Ambassador", 40000, 2);
 
@@ -82,48 +82,48 @@ INSERT INTO roles (title, salary, department_id)
 VALUES ("Accountant", 78000, 5);
 
 -- EMPLOYEES --
-
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Rabia", "Buckley", 1, null);
-
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Paulina", "Stafford", 2, 1);
-
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Christine", "Thorne", 3, 1);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Leonardo", "Darby", 4, null);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Will", "Ball", 5, 2);
-
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Andreea", "Schwartz", 6, 2);
-
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Vince", "Bradford", 7, null);
-
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Gerorgina", "Burks", 8, 3);
-
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Conner", "Shaw", 9, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Kay", "McBride", 10, null);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Tyrese", "Archer", 11, 4);
+VALUES ("Clyde", "Jarvis", 13, null);
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Andreea", "Schwartz", 6, 2);
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Gerorgina", "Burks", 8, 3);
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Paulina", "Stafford", 2, 1);
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Will", "Ball", 5, 2);
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Christine", "Thorne", 3, 1);
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Conner", "Shaw", 9, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Angie", "Lopez", 12, 4);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Clyde", "Jarvis", 13, null);
+VALUES ("Tyrese", "Archer", 11, 4);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Maxie", "Gus", 14, 5);
+
 
 SELECT * FROM department;
 SELECT * FROM roles;
@@ -142,5 +142,9 @@ AS title FROM employee
 JOIN roles ON employee.role_id = roles.id;
 
 --search all employees --
-SELECT first_name, last_name, title, CONCAT('$', salary) FROM employee
-LEFT JOIN roles ON employee.role_id = roles.id;
+SELECT employee.first_name, employee.last_name, roles.title, department.name AS department_name, CONCAT('$', roles.salary), CONCAT(manager.first_name, ' ', manager.last_name) AS manager
+FROM employee
+LEFT JOIN employee manager on manager.id = employee.manager_id
+INNER JOIN roles ON (roles.id = employee.role_id)
+INNER JOIN department ON (department.id = roles.department_id)
+ORDER BY employee.id;

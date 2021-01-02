@@ -76,7 +76,7 @@ const searchByDepartments = () => {
         const department = res.DepartmentName
         if (department === "Sales") {
             
-            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
             query += "LEFT JOIN roles ON roles.department_id = department.id "
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Sales' "
@@ -89,7 +89,7 @@ const searchByDepartments = () => {
         }
         if (department === "Marketing") {
             
-            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
             query += "LEFT JOIN roles ON roles.department_id = department.id "
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Marketing' "
@@ -102,7 +102,7 @@ const searchByDepartments = () => {
         }
         if (department === "Engineer") {
             
-            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
             query += "LEFT JOIN roles ON roles.department_id = department.id "
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Engineer' "
@@ -115,7 +115,7 @@ const searchByDepartments = () => {
         }
         if (department === "Human Resource") {
             
-            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
             query += "LEFT JOIN roles ON roles.department_id = department.id "
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Human Resource' "
@@ -128,7 +128,7 @@ const searchByDepartments = () => {
         }
         if (department === "Finance") {
             
-            let query = "SELECT department.name, roles.title, roles.salary, employee.first_name, employee.last_name FROM department "
+            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
             query += "LEFT JOIN roles ON roles.department_id = department.id "
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Finance' "
@@ -155,7 +155,10 @@ const searchByRoles = () => {
 }
 
 const searchAllEmployees = () => {
-    let query = "SELECT first_name, last_name, title, salary FROM employee LEFT JOIN roles ON employee.role_id = roles.id"
+    let query = "SELECT employee.first_name, employee.last_name, department.name AS department_name, "
+    query += "roles.title, CONCAT('$', roles.salary) AS salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee "
+    query += "LEFT JOIN employee manager on manager.id = employee.manager_id INNER JOIN roles ON (roles.id = employee.role_id) "
+    query += "INNER JOIN department ON (department.id = roles.department_id) ORDER BY employee.id"
     connection.query(query, (err, data) => {
         if (err) throw err;
         console.table(data);
@@ -174,6 +177,7 @@ const addingDepartment = () => {
         console.log(res)
         connection.query(`INSERT INTO department (name) VALUES ('${res.appDepartment}')`, (err, data) => {
             if (err) throw err;
+            console.table(data)
             console.log("Successfully added Department")
             mainMenu()
         })
