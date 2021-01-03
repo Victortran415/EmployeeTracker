@@ -81,7 +81,7 @@ const searchByDepartments = () => {
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Sales' "
             
-            employeeDep = connection.query(query, (err, data) => {
+            connection.query(query, (err, data) => {
                 if (err) throw err;
                 console.table(data);
                 mainMenu()
@@ -94,7 +94,7 @@ const searchByDepartments = () => {
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Marketing' "
             
-            employeeDep = connection.query(query, (err, data) => {
+            connection.query(query, (err, data) => {
                 if (err) throw err;
                 console.table(data);
                 mainMenu()
@@ -107,7 +107,7 @@ const searchByDepartments = () => {
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Engineer' "
             
-            employeeDep = connection.query(query, (err, data) => {
+            connection.query(query, (err, data) => {
                 if (err) throw err;
                 console.table(data);
                 mainMenu()
@@ -120,7 +120,7 @@ const searchByDepartments = () => {
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Human Resource' "
             
-            employeeDep = connection.query(query, (err, data) => {
+            connection.query(query, (err, data) => {
                 if (err) throw err;
                 console.table(data);
                 mainMenu()
@@ -133,7 +133,7 @@ const searchByDepartments = () => {
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
             query += "WHERE department.name = 'Finance' "
             
-            employeeDep = connection.query(query, (err, data) => {
+            connection.query(query, (err, data) => {
                 if (err) throw err;
                 console.table(data);
                 mainMenu()
@@ -187,16 +187,47 @@ const addingDepartment = () => {
 
 //NOTE: Need to complete this 
 const addingEmployee = () => {
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "firstName",
-            message: "Enter Employee first name"
-        },
-        {
-            type: "input",
-            name: "lastName",
-            message: "Enter Employee last name"
-        }
-    ])
+    connection.query("SELECT * FROM roles", (err, data) => {
+        if (err) throw err;
+
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "firstName",
+                message: "Enter Employee first name"
+            },
+            {
+                type: "input",
+                name: "lastName",
+                message: "Enter Employee last name"
+            },
+            {
+                type: "list",
+                name: "whatRole",
+                message: "What is the role of the employee?",
+                choices: function() {
+                    let roleArray = []
+                    for (let i = 0; i < data.length; i++) {
+                        roleArray.push(data[i].title)
+                    }
+                    return roleArray;
+                }
+            },
+        ]).then((res) => {
+            for (let i = 0; i < data.length; i ++) {
+                if (data[i].title === res.whatRole) {
+                    res.role_id = data[i].id;
+                }
+            }
+            connection.query("INSERT INTO employee SET ?", {
+                first_name: res.firstName,
+                last_name: res.lastName,
+                role_id: res.role_id
+            }, (err, data) => {
+                if (err) throw err;
+                console.table(data)
+                mainMenu()
+            })
+        })
+    })
 }
