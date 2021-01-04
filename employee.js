@@ -45,11 +45,11 @@ const mainMenu = () => {
             case "Add Department":
                 addingDepartment()
                 break;
-            case "Add Role":
-
-                break;
             case "Add Employee":
                 addingEmployee()
+                break;
+            case "Add Roles":
+                addingRole()
                 break;
             default:
                 connection.end();
@@ -175,17 +175,16 @@ const addingDepartment = () => {
         }
     ]).then((res) => {
         console.log(res)
-        connection.query(`INSERT INTO department (name) VALUES ('${res.appDepartment}')`, (err, data) => {
-            if (err) throw err;
-            console.table(data)
-            console.log("Successfully added Department")
-            mainMenu()
-        })
+        // connection.query(`INSERT INTO department (name) VALUES ('${res.appDepartment}')`, (err, data) => {
+        //     if (err) throw err;
+        //     console.table(data)
+        //     console.log("Successfully added Department")
+        //     mainMenu()
+        // })
     })
 }
 
 
-//NOTE: Need to complete this 
 const addingEmployee = () => {
     connection.query("SELECT * FROM roles", (err, data) => {
         if (err) throw err;
@@ -223,6 +222,53 @@ const addingEmployee = () => {
                 first_name: res.firstName,
                 last_name: res.lastName,
                 role_id: res.role_id
+            }, (err, data) => {
+                if (err) throw err;
+                console.table(data)
+                mainMenu()
+            })
+        })
+    })
+}
+
+const addingRole = () => {
+    connection.query("SELECT * FROM department", function(err, res) {
+        if (err) throw err;
+
+
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "addRole",
+                message: "What role would you wish to add?",
+                },
+                {
+                type: "input",
+                name: "salary",
+                message: "What is the salary of this role?",
+                },
+                {
+                type: "list",
+                name: "whatDept",
+                message: "Which department will this role be added to?",
+                choices: function() {
+                    let departmentArr = [];
+                    for (let i = 0; i < res.length; i++) {
+                        departmentArr.push(res[i].name)
+                    }
+                    return departmentArr
+                },
+            }
+        ]).then((answer) => {
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].name === answer.whatDept) {
+                    answer.department_id = res[i].id;
+                }
+            }
+            connection.query("INSERT INTO roles SET ?", {
+                title: answer.addRole,
+                salary: answer.salary,
+                department_id: answer.department_id
             }, (err, data) => {
                 if (err) throw err;
                 console.table(data)
