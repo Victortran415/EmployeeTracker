@@ -60,85 +60,32 @@ const mainMenu = () => {
 }
 
 const searchByDepartments = () => {
-    inquirer.prompt({
-        type: "list",
-        name: "DepartmentName",
-        message: "What department do you want to view?",
-        choices: [
-            "Sales",
-            "Marketing",
-            "Engineer",
-            "Human Resource",
-            "Finance"
-        ]
-    }).then((res) => {
-        console.log(res)
-        const department = res.DepartmentName
-        if (department === "Sales") {
-            
+    connection.query("SELECT * FROM department", (err, data) => {
+        if (err) throw err;
+        inquirer.prompt({
+            type: "list",
+            name: "searchDept",
+            message: "What department would you like to view?",
+            choices: function() {
+                let searchByDept = []
+                for (let i = 0; i < data.length; i++) {
+                    searchByDept.push(data[i].name) 
+                }
+                return searchByDept
+            }
+        }).then((answer) => {
+            console.log(answer.searchDept)
             let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
             query += "LEFT JOIN roles ON roles.department_id = department.id "
             query += "LEFT JOIN employee ON employee.role_id = roles.id "
-            query += "WHERE department.name = 'Sales' "
-            
-            connection.query(query, (err, data) => {
+            query += "WHERE ?"
+
+            connection.query(query, {name: answer.searchDept}, (err, data) => {
                 if (err) throw err;
                 console.table(data);
                 mainMenu()
             })
-        }
-        if (department === "Marketing") {
-            
-            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
-            query += "LEFT JOIN roles ON roles.department_id = department.id "
-            query += "LEFT JOIN employee ON employee.role_id = roles.id "
-            query += "WHERE department.name = 'Marketing' "
-            
-            connection.query(query, (err, data) => {
-                if (err) throw err;
-                console.table(data);
-                mainMenu()
-            })
-        }
-        if (department === "Engineer") {
-            
-            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
-            query += "LEFT JOIN roles ON roles.department_id = department.id "
-            query += "LEFT JOIN employee ON employee.role_id = roles.id "
-            query += "WHERE department.name = 'Engineer' "
-            
-            connection.query(query, (err, data) => {
-                if (err) throw err;
-                console.table(data);
-                mainMenu()
-            })
-        }
-        if (department === "Human Resource") {
-            
-            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
-            query += "LEFT JOIN roles ON roles.department_id = department.id "
-            query += "LEFT JOIN employee ON employee.role_id = roles.id "
-            query += "WHERE department.name = 'Human Resource' "
-            
-            connection.query(query, (err, data) => {
-                if (err) throw err;
-                console.table(data);
-                mainMenu()
-            })
-        }
-        if (department === "Finance") {
-            
-            let query = "SELECT department.name, roles.title, CONCAT('$', roles.salary) AS salary, employee.first_name, employee.last_name FROM department "
-            query += "LEFT JOIN roles ON roles.department_id = department.id "
-            query += "LEFT JOIN employee ON employee.role_id = roles.id "
-            query += "WHERE department.name = 'Finance' "
-            
-            connection.query(query, (err, data) => {
-                if (err) throw err;
-                console.table(data);
-                mainMenu()
-            })
-        }
+        })
     })
 }
 
@@ -167,20 +114,26 @@ const searchAllEmployees = () => {
 }
 
 const addingDepartment = () => {
-    inquirer.prompt([
-        {
-        type: "input",
-        name: "addDepartment",
-        message: "What is the name of the Department you'll wish to add?"
-        }
-    ]).then((res) => {
-        console.log(res)
-        // connection.query(`INSERT INTO department (name) VALUES ('${res.appDepartment}')`, (err, data) => {
-        //     if (err) throw err;
-        //     console.table(data)
-        //     console.log("Successfully added Department")
-        //     mainMenu()
-        // })
+    connection.query("SELECT * FROM department", (err, data) => {
+        if (err) throw err;
+
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "addDepartment",
+                message: "What is the name of the Department you'll wish to add?"
+            }
+        ]).then((res) => {
+            console.log(res)
+            connection.query("INSERT INTO department SET ?", {
+                name: res.addDepartment,
+            }, (err, data) => {
+                if (err) throw err;
+                console.table(data)
+                console.log("Successfully added Department")
+                mainMenu()
+            })
+        })
     })
 }
 
