@@ -235,48 +235,62 @@ const addingRole = () => {
 }
 
 
-//FIXME: THIS NEEDS WORK
+//FIXME: THIS NEEDS WORK, has an SQL error syntax
 const updateEmployeeRole = () => {
-    connection.query("SELECT * FROM roles", (err, data) => {
-        connection.query("SELECT * FROM department", (err, res) => {
+    function rolesArr() {
+        let roleEle = [];
+        connection.query("SELECT * FROM roles", (err, res) => {
             if (err) throw err;
-            inquirer.prompt([
-                {
-                    type: "list",
-                    name: "updateRole",
-                    message: "What would Role would you like to update?",
-                    choices: function() {
-                        let roleEle = [];
-                        for (let i = 0; i < data.length; i++) {
-                            roleEle.push(data[i].title)
-                        }
-                        return roleEle;
-                    },
-                },
-                {
-                    type: "input",
-                    name: "updateSalary",
-                    message: "What is the salary of this new role thats being updated?",
-                },
-                {
-                    type: "list",
-                    name: "dept",
-                    message: "What department does this role fall into?",
-                    choices: function() {
-                        let deptEle = [];
-                        for (let i = 0; i < res.length; i++) {
-                            deptEle.push(res[i].name)
-                        }
-                        return deptEle
-                    },
-                },
-            ]).then((answer) => {
-                for (let i = 0; i < res.length; i++) {
-                    if (res[i].name === answer.dept) {
-                        answer.department_id = res[i].id
+            
+            for (let i = 0; i < res.length; i++){
+                roleEle.push(res[i].title)
+            }
+            
+        })
+        return roleEle
+    }
+
+    let query = "SELECT employee.first_name, roles.title, roles.salary FROM employee JOIN roles ON employee.role_id = roles.id"
+
+    connection.query(query, (err, data) => {
+        if (err) throw err;
+        console.table(data)
+
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "updateEmp",
+                message: "Which employee status would you like to update?",
+                choices: function() {
+                    let updateEmployee = [];
+                    for (let i = 0; i < data.length; i++) {
+                        updateEmployee.push(data[i].first_name)
                     }
+                    return updateEmployee
                 }
-                
+            },
+            {
+                type: "list",
+                name: "updateRole",
+                message: "Which would Role would you like to update?",
+                choices: rolesArr()
+            },
+            {
+                type: "input",
+                name: "updateSalary",
+                message: "What is the salary of this new role thats being updated?",
+            },
+            
+        ]).then((answer) => {
+            let roleEl = rolesArr().indexOf(answer.updateRole) + 1;
+            connection.query("UPDATE employee SET WHERE ?", {
+                first_name: answer.updateEmp,
+                role_id: roleEl,
+                salary: answer.updateSalary
+            }, (err, res) => {
+                if (err) throw err;
+                console.table(res);
+                mainMenu()
             })
         })
     })

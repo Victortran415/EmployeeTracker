@@ -2,7 +2,7 @@
   # Employee_Tracker
 
   ## Description
-  For this application, I've created an interface that makes it easy for Users such as business owners or management team to view information as well as storing data into the database. This application will be using node.js so users will be viewing and editing information through the command-line.
+  For this application, I've created an interface that makes it easy for Users such as business owners or management team to view information as well as storing data into the database. This application will be using node.js so users will be viewing and editing information through the command-line. Users will be able to view employees based on departments, roles or all together. They will also be able to add departments, roles, employee, and update status of an employee if needed. 
 
   ## Time of Contents
   - [Installation](#installation)
