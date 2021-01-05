@@ -134,7 +134,7 @@ SELECT department.name, roles.title, roles.salary, employee.first_name, employee
 from department 
 LEFT JOIN roles ON roles.department_id = department.id 
 LEFT JOIN employee ON employee.role_id = roles.id 
-WHERE department.name = 'Sales';
+WHERE ?;
 
 -- search by roles --
 SELECT employee.first_name, employee.last_name, roles.title

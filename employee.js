@@ -27,6 +27,7 @@ const mainMenu = () => {
             "Add Department",
             "Add Employee",
             "Add Roles",
+            "Update Employee Role",
             "Exit"
         ]
     }).then((response) => {
@@ -50,6 +51,9 @@ const mainMenu = () => {
                 break;
             case "Add Roles":
                 addingRole()
+                break;
+            case "Update Employee Role":
+                updateEmployeeRole()
                 break;
             default:
                 connection.end();
@@ -188,19 +192,18 @@ const addingRole = () => {
     connection.query("SELECT * FROM department", function(err, res) {
         if (err) throw err;
 
-
         inquirer.prompt([
             {
                 type: "input",
                 name: "addRole",
                 message: "What role would you wish to add?",
-                },
-                {
+            },
+            {
                 type: "input",
                 name: "salary",
                 message: "What is the salary of this role?",
-                },
-                {
+            },
+            {
                 type: "list",
                 name: "whatDept",
                 message: "Which department will this role be added to?",
@@ -210,8 +213,8 @@ const addingRole = () => {
                         departmentArr.push(res[i].name)
                     }
                     return departmentArr
-                },
-            }
+                }
+            },
         ]).then((answer) => {
             for (let i = 0; i < res.length; i++) {
                 if (res[i].name === answer.whatDept) {
@@ -230,3 +233,52 @@ const addingRole = () => {
         })
     })
 }
+
+
+//FIXME: THIS NEEDS WORK
+const updateEmployeeRole = () => {
+    connection.query("SELECT * FROM roles", (err, data) => {
+        connection.query("SELECT * FROM department", (err, res) => {
+            if (err) throw err;
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "updateRole",
+                    message: "What would Role would you like to update?",
+                    choices: function() {
+                        let roleEle = [];
+                        for (let i = 0; i < data.length; i++) {
+                            roleEle.push(data[i].title)
+                        }
+                        return roleEle;
+                    },
+                },
+                {
+                    type: "input",
+                    name: "updateSalary",
+                    message: "What is the salary of this new role thats being updated?",
+                },
+                {
+                    type: "list",
+                    name: "dept",
+                    message: "What department does this role fall into?",
+                    choices: function() {
+                        let deptEle = [];
+                        for (let i = 0; i < res.length; i++) {
+                            deptEle.push(res[i].name)
+                        }
+                        return deptEle
+                    },
+                },
+            ]).then((answer) => {
+                for (let i = 0; i < res.length; i++) {
+                    if (res[i].name === answer.dept) {
+                        answer.department_id = res[i].id
+                    }
+                }
+                
+            })
+        })
+    })
+}
+
