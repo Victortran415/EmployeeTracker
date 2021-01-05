@@ -38,7 +38,7 @@
   - Andre Smith
 
   ## Tests
-    TBA
+  <img src = "Assets/employeetracker.gif" style="width: 600px:">
 
   ## Questions?
   Email: victortran415@gmail.com
