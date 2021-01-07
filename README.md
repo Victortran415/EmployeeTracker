@@ -1,10 +1,10 @@
 
   # Employee_Tracker
 
-  ## Description
+  ## Description:
   For this application, I've created an interface that makes it easy for Users such as business owners or management team to view information as well as storing data into the database. This application will be using node.js so users will be viewing and editing information through the command-line. Users will be able to view employees based on departments, roles or all together. They will also be able to add departments, roles, employee, and update status of an employee if needed. 
 
-  ## Time of Contents
+  ## Time of Contents:
   - [Installation](#installation)
   - [Usage](#usage)
   - [License](#license)
@@ -18,26 +18,28 @@
   - `mySQL` a database management system
   - `console.table` similar to console.log however console.log will put data into a table
   
-  Also, used `MySQLWorkbench` to deploy my code that is currently listed on `employeeSEED.sql` file
+  `MySQLWorkbench`: to deploy my code that is currently listed on `employeeSEED.sql` file
+
+  `VisualStudioCode`: my text editor
 
   ## Usage:
-  Providing steps on how to use this interface. (Video will be added as well) 
+  Providing steps on how to use this interface. (Video provided below) 
   - First clone this repo, 
   - make sure to install additional packages thats listed above, 
   - Run `node employee.js` on the command-line, 
   - Users will be given information on what to View or if information will need to be added.
 
-  ## License
+  ## License:
   MIT 
 
-  ## Contribution
+  ## Contribution:
   Some classmates has gathered a study group where we worked together on this homework assignment. 
   - Victor Tran 
   - Geoffrey Jiang 
   - Cameron Wright 
   - Andre Smith
 
-  ## Tests
+  ## Tests:
   <img src = "Assets/employeetracker.gif" style="width: 600px:">
 
   ## Questions?

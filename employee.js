@@ -28,6 +28,7 @@ const mainMenu = () => {
             "Add Employee",
             "Add Roles",
             "Update Employee Role",
+            "Update Role/Salary",
             "Exit"
         ]
     }).then((response) => {
@@ -53,7 +54,10 @@ const mainMenu = () => {
                 addingRole()
                 break;
             case "Update Employee Role":
-                updateEmployeeRole()
+                updateEmployee()
+                break;
+            case "Update Role/Salary":
+                updateRole()
                 break;
             default:
                 connection.end();
@@ -63,6 +67,7 @@ const mainMenu = () => {
     })
 }
 
+//View Employees by Department
 const searchByDepartments = () => {
     connection.query("SELECT * FROM department", (err, data) => {
         if (err) throw err;
@@ -93,6 +98,7 @@ const searchByDepartments = () => {
     })
 }
 
+//View Employees by Roles
 const searchByRoles = () => {
     let query = "SELECT employee.first_name, employee.last_name, roles.title "
     query += "AS title FROM employee " 
@@ -105,6 +111,7 @@ const searchByRoles = () => {
     })
 }
 
+//View All Employees
 const searchAllEmployees = () => {
     let query = "SELECT employee.first_name, employee.last_name, department.name AS department_name, "
     query += "roles.title, CONCAT('$', roles.salary) AS salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee "
@@ -117,6 +124,7 @@ const searchAllEmployees = () => {
     })
 }
 
+//Adding Departments
 const addingDepartment = () => {
     connection.query("SELECT * FROM department", (err, data) => {
         if (err) throw err;
@@ -141,7 +149,7 @@ const addingDepartment = () => {
     })
 }
 
-
+//Adding Employees
 const addingEmployee = () => {
     connection.query("SELECT * FROM roles", (err, data) => {
         if (err) throw err;
@@ -188,6 +196,7 @@ const addingEmployee = () => {
     })
 }
 
+//Adding Roles
 const addingRole = () => {
     connection.query("SELECT * FROM department", function(err, res) {
         if (err) throw err;
@@ -235,63 +244,78 @@ const addingRole = () => {
 }
 
 
-//FIXME: THIS NEEDS WORK, has an SQL error syntax
-const updateEmployeeRole = () => {
-    function rolesArr() {
-        let roleEle = [];
-        connection.query("SELECT * FROM roles", (err, res) => {
-            if (err) throw err;
-            
-            for (let i = 0; i < res.length; i++){
-                roleEle.push(res[i].title)
+function updateEmployee() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'empFirstName',
+            message: 'What is the employee you would like to updates first name?',
+        },
+        {
+            type: 'input',
+            name: 'empLastName',
+            message: 'What is the employee you would like to updates first last?',
+        },
+        {
+            type: 'input',
+            name: 'newRole',
+            message: 'What Role would you like them to have? (ID)',
+        }
+    ])
+    .then((answer) => {
+        connection.query(
+            'UPDATE employee SET ? WHERE ?',
+            [
+                {
+                    first_name: answer.empFirstName
+                },
+                {
+                    last_name: answer.empLastName
+                },
+                {
+                    role_id: answer.newRole,
+                },
+            ],
+            (err, res) => {
+                if (err) throw err;
+                console.log(`${answer.empFirstName} ${answer.empLastName}'s role updated \n`)
+                mainMenu()
             }
-            
-        })
-        return roleEle
-    }
+        )
+    })
+};
 
-    let query = "SELECT employee.first_name, roles.title, roles.salary FROM employee JOIN roles ON employee.role_id = roles.id"
-
-    connection.query(query, (err, data) => {
+const updateRole = () => {
+    connection.query("SELECT * FROM roles", (err, data) => {
         if (err) throw err;
-        console.table(data)
-
         inquirer.prompt([
             {
-                type: "list",
-                name: "updateEmp",
-                message: "Which employee status would you like to update?",
-                choices: function() {
-                    let updateEmployee = [];
-                    for (let i = 0; i < data.length; i++) {
-                        updateEmployee.push(data[i].first_name)
+            type: "list",
+            name: "updateRole",
+            message: "Which would Role would you like to update?",
+            choices: function () {
+                    let roleEle = [];
+                    for (let i = 0; i < data.length; i++){
+                        roleEle.push(data[i].title)
                     }
-                    return updateEmployee
+                    return roleEle
                 }
-            },
-            {
-                type: "list",
-                name: "updateRole",
-                message: "Which would Role would you like to update?",
-                choices: rolesArr()
             },
             {
                 type: "input",
                 name: "updateSalary",
                 message: "What is the salary of this new role thats being updated?",
             },
-            
         ]).then((answer) => {
-            let roleEl = rolesArr().indexOf(answer.updateRole) + 1;
-            connection.query("UPDATE employee SET WHERE ?", {
-                first_name: answer.updateEmp,
-                role_id: roleEl,
-                salary: answer.updateSalary
-            }, (err, res) => {
+            connection.query("UPDATE roles SET ? WHERE ?", [
+                {title: answer.updateRole},
+                {salary: answer.updateSalary}
+            ],(err, data) => {
                 if (err) throw err;
-                console.table(res);
+                console.log(`${answer.updateRole}'s salary has been updated to $${answer.updateSalary}`)
                 mainMenu()
             })
         })
     })
 }
+

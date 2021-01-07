@@ -46,38 +46,46 @@ INSERT INTO department (name)
 VALUES ("Finance");
 
 
-
 -- ROLES --
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Sales Operation Manager", 100000, 1);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Sales Rep", 60000, 1);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Salesperson", 40000, 1);
 
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Marketing Manager", 100000, 2);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Marketing Specialist", 80000, 2);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Brand Ambassador", 40000, 2);
 
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Engineering Project Manager", 110000, 3);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Software Engineer", 120000, 3);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Senior Developer", 140000, 3);
 
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Human Resource Manager", 90000, 4);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Recruiter", 60000, 4);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Relations Specialist", 45000, 4);
 
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Finance Manager", 120000, 5);
+
 INSERT INTO roles (title, salary, department_id)
 VALUES ("Accountant", 78000, 5);
 
